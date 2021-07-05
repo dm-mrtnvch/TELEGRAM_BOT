@@ -1,13 +1,10 @@
 const TelegramAPI = require('node-telegram-bot-api');
-
-const {gameOptions, againOptions} = require('./options')
+const sequelize = require('./db');
+const {gameOptions, againOptions} = require('./options');
+const UserModel = require('./models');
 const token = '1866462389:AAETNMboHgN4qwfPUNvOjWY_3My380dwC4M';
 const bot = new TelegramAPI(token, {polling: true});
 const chats = {};
-
-
-
-
 
 bot.setMyCommands([
     {command: '/start', description: 'initial greeting'},
@@ -19,8 +16,8 @@ const startGame = async (chatId) => {
     await bot.sendMessage(chatId, `try to guess a number from 0 to 9`);
     const randomNumber = Math.floor(Math.random() * 10 + 1);
     chats[chatId] = randomNumber;
-    await bot.sendMessage(chatId, 'try to guess a number', gameOptions)
-}
+    await bot.sendMessage(chatId, 'try to guess a number', gameOptions);
+};
 
 const start = () => {
     bot.on('message', async msg => {
@@ -53,7 +50,7 @@ const start = () => {
         if(chatId === chats[chatId]){
             return bot.sendMessage(chatId, `Congratulations! You guessed the numbers ${chats[chatId]}`,againOptions )
         } else {
-            return bot.sendMessage(chatId, `Unfortunately you lost. Crrect number was ${chats[chatId]}`,againOptions)
+            return bot.sendMessage(chatId, `Unfortunately you lost. Correct number was ${chats[chatId]}`,againOptions)
         }
         // bot.sendMessage(chatId, `you chosen number ${data}`);
     });

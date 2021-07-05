@@ -15,5 +15,5 @@ module.exports = {
                 [{text: 'play once again', callback_data: '/again'}]
             ]
         })
-    };
-};
+    }
+}
